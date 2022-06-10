@@ -1,0 +1,60 @@
+name: "Fussel Action"
+author: "Alberto Zugazagoitia"
+description: "GitHub Action for running Fussel, a static photo gallery generator"
+
+inputs:
+  input-path:  # id of input
+    description: "Set to your input photo folder. It must have albums in subfolders inside it with the folder names as the name of the albums you want in the gallery"
+    required: true
+    default: '.'
+  http-root:
+    description: "Set to the root url you intend to host the site"  
+    required: false
+    default: "/"
+  overwrite:
+    description: "Force a full rebuild of the gallery photos."
+    required: false
+    default: false
+  people-enable:
+    description: "Enable face tag detection."
+    required: false
+    default: true
+  watermark-enable:
+    description: "Enable placement of watermark in bottom right corner of photos."
+    required: false
+    default: false
+  watermark-path:
+    description: "Path of the watermark to use"
+    required: false
+    default: ""
+  watermark-ratio:
+    description: "Watermark size ratio (0.0 -> 1.0)"
+    required: false
+    default: 0.3
+  site-name:
+    description: "Title shown at the top of the browser tab"
+    required: false
+    default: "Fussel Gallery"
+  recursive-albums:
+    description: "Recursively process sub-folders as albums"
+    required: false
+    default: true      
+  recursive-albums-name-pattern:
+    description: "Pattern for album name creation of sub albums: {parent_album} will be replaced with the parent album and {album} will be replaced with the album name"
+    required: false
+    default: "{parent_album} > {album}"      
+    
+runs:
+  using: docker
+  image: cbenning/fussel:latest
+  env:
+    INPUT_PATH: ${{ inputs.input-path }}
+    HTTP_ROOT: ${{ inputs.http-root }}
+    OVERWRITE: ${{ inputs.overwrite }}
+    PEOPLE_ENABLE: ${{ inputs.people-enable }}
+    WATERMARK_ENABLE: ${{ inputs.watermark-enable }}
+    WATERMARK_PATH: ${{ inputs.watermark-path }}
+    WATERMARK_RATIO: ${{ inputs.watermark-ratio }}
+    SITE_NAME: ${{ inputs.site-name }}
+    RECURSIVE_ALBUMS: ${{ inputs.recursive-albums }}
+    RECURSIVE_ALBUMS_NAME_PATTERN: ${{ inputs.recursive-albums-name-pattern }}
